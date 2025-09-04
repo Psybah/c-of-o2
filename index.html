@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Occupancy Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" fill="#6366F1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">GovPortal</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#pricing" class="nav-link">Fees</a>
+                <a href="#about" class="nav-link">About Us</a>
+                <a href="#process" class="nav-link">Process</a>
+            </div>
+            
+            <button class="cta-button" onclick="openPaymentPortal()">
+                Apply for C of O
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Real-Time Certificate
+                of Occupancy Portal
+            </h1>
+            <p class="hero-subtitle">
+                Process your C of O applications, track status updates, and make payments
+                in one secure government portal built for efficient service delivery.
+            </p>
+        </div>
+    </main>
+
+    <!-- Certificate Preview -->
+    <div class="certificate-preview">
+        <img src="./assets/C-of-O.PNG" alt="Certificate of Occupancy Preview" />
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Apply for Certificate of Occupancy</h2>
+                <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Property Information</h3>
+                    <div class="form-group">
+                        <label for="propertyAddress">Property Address</label>
+                        <textarea id="propertyAddress" name="propertyAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="landSize">Land Size (sq ft)</label>
+                        <input type="number" id="landSize" name="landSize" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Payment Information</h3>
+                    <div class="payment-summary">
+                        <div class="fee-item">
+                            <span>Application Fee</span>
+                            <span>₦15,000</span>
+                        </div>
+                        <div class="fee-item">
+                            <span>Processing Fee</span>
+                            <span>₦25,000</span>
+                        </div>
+                        <div class="fee-item total">
+                            <span>Total Amount</span>
+                            <span>₦40,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" onclick="closePaymentModal()">Cancel</button>
+                <button class="pay-btn" onclick="processPayment()">Pay ₦40,000</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
