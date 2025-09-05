@@ -27,19 +27,50 @@ function validateApplicationForm(formData) {
 	const requiredFields = ['fullName', 'email', 'phone', 'propertyAddress', 'landSize'];
 	const errors = [];
 	
+	// Clear previous errors
 	requiredFields.forEach(field => {
-		if (!formData[field] || formData[field].trim() === '') {
+		const errorEl = document.getElementById(field + '-error');
+		const inputEl = document.getElementById(field);
+		if (errorEl) errorEl.classList.remove('show');
+		if (inputEl) inputEl.classList.remove('error');
+	});
+	
+	requiredFields.forEach(field => {
+		const value = formData[field] || '';
+		const errorEl = document.getElementById(field + '-error');
+		const inputEl = document.getElementById(field);
+		
+		if (!value.trim()) {
 			const fieldName = field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 			errors.push(`${fieldName} is required`);
+			if (errorEl) {
+				errorEl.textContent = `${fieldName} is required`;
+				errorEl.classList.add('show');
+			}
+			if (inputEl) inputEl.classList.add('error');
 		}
 	});
 	
 	if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
 		errors.push('Please enter a valid email address');
+		const errorEl = document.getElementById('email-error');
+		const inputEl = document.getElementById('email');
+		if (errorEl) {
+			errorEl.textContent = 'Please enter a valid email address';
+			errorEl.classList.add('show');
+		}
+		if (inputEl) inputEl.classList.add('error');
 	}
 	
-	if (formData.phone && /^[\+]?\d[\d\s\-\(\)]{9,}$/.test(formData.phone) === false) {
+	if (formData.phone && !/^[\+]?\d[\d\s\-\(\)]{9,}$/.test(formData.phone)) {
 		errors.push('Please enter a valid phone number');
+		const errorEl = document.getElementById('phone-error');
+		const inputEl = document.getElementById('phone');
+		if (errorEl) {
+			errorEl.textContent = 'Please enter a valid phone number';
+			errorEl.classList.add('show');
+		}
+		if (inputEl) inputEl.classList.add('error');
 	}
 	
 	return { isValid: errors.length === 0, errors };
@@ -56,17 +87,27 @@ function processPayment() {
 	
 	const validation = validateApplicationForm(formData);
 	if (!validation.isValid) {
-		alert('Please fill in all required fields:\n' + validation.errors.join('\n'));
-		return;
+		return; // Errors are now shown inline
 	}
 	
-	alert('Payment Processing...\n\nApplication submitted successfully!\n\nYou will receive a confirmation email shortly.\nApplication ID: C-O-O-' + Date.now());
-	closePaymentModal();
-	
-	['fullName','email','phone','propertyAddress','landSize'].forEach(id => {
-		const el = document.getElementById(id);
-		if (el) el.value = '';
-	});
+	// Initialize BluePay and process payment
+	if (typeof BluePay !== 'undefined') {
+		console.log('BluePay loaded successfully');
+		BluePay.init('blue-1234567890');
+		console.log('Processing payment for ₦40,000 (40000 kobo)');
+		BluePay.checkout({
+			amount: 40000.00,  // ₦40,000 in kobo
+			productID: '18793',
+			payerEmail: formData.email,
+			cardHolderName: formData.fullName,
+			payerPhoneNumber: formData.phone,
+			successUrl: '/success',
+			failureUrl: '/failure'
+		});
+	} else {
+		console.error('BluePay not loaded - check script source');
+		alert('Payment gateway not available. Please try again later.');
+	}
 }
 
 function formatCurrency(amount) {
