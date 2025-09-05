@@ -94,15 +94,22 @@ function processPayment() {
 	if (typeof BluePay !== 'undefined') {
 		console.log('BluePay loaded successfully');
 		BluePay.init('blue-1234567890');
+		
+		// Calculate amount from form or use default
+		const totalAmount = 40000; // ₦40,000 in kobo - could be made dynamic
+		const productId = '18793'; // Could be made configurable
+		const successUrl = window.location.origin + '/success';
+		const failureUrl = window.location.origin + '/failure';
+		
 		console.log('Processing payment for ₦40,000 (40000 kobo)');
 		BluePay.checkout({
-			amount: 40000.00,  // ₦40,000 in kobo
-			productID: '18793',
+			amount: totalAmount,
+			productID: productId,
 			payerEmail: formData.email,
 			cardHolderName: formData.fullName,
 			payerPhoneNumber: formData.phone,
-			successUrl: '/success',
-			failureUrl: '/failure'
+			successUrl: successUrl,
+			failureUrl: failureUrl
 		});
 	} else {
 		console.error('BluePay not loaded - check script source');
