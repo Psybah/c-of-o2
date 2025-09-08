@@ -101,8 +101,8 @@ function processPayment() {
 			payerEmail: formData.email,
 			cardHolderName: formData.fullName,
 			payerPhoneNumber: formData.phone,
-			successUrl: '/success',
-			failureUrl: '/failure'
+			successUrl: '/success.html',
+			failureUrl: '/failure.html'
 		});
 	} else {
 		console.error('BluePay not loaded - check script source');
