@@ -96,7 +96,7 @@ function processPayment() {
 		BluePay.init('blue_test_289de48ef5e64');
 		console.log('Processing payment for ₦48,000');
 		BluePay.checkout({
-			amount: 48000.00,
+			amount: "48000",
 			productID: '19985',
 			payerEmail: formData.email,
 			cardHolderName: formData.fullName,
