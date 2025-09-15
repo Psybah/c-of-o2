@@ -1,4 +1,6 @@
 window.initModal = function(){};
+// Prevent double submits without disabling the button (preserves user gesture)
+window.__isPaying = false;
 
 function openPaymentPortal() {
 	const modal = document.getElementById('paymentModal');
@@ -89,6 +91,17 @@ function processPayment() {
 	if (!validation.isValid) {
 		return; // Errors are now shown inline
 	}
+
+	// Non-blocking loading state (do not disable or delay checkout)
+	if (!window.__isPaying) {
+		window.__isPaying = true;
+		const btn = document.getElementById('payBtn');
+		if (btn) {
+			btn.classList.add('is-loading');
+			btn.dataset.label = btn.innerText;
+			btn.innerText = 'Processing...';
+		}
+	}
 	
 	// Initialize BluePay and process payment
 	if (typeof BluePay !== 'undefined') {
@@ -108,6 +121,16 @@ function processPayment() {
 		console.error('BluePay not loaded - check script source');
 		alert('Payment gateway not available. Please try again later.');
 	}
+
+	// Soft reset after 12s in case control returns
+	setTimeout(function(){
+		const btn = document.getElementById('payBtn');
+		if (btn && btn.classList.contains('is-loading')) {
+			btn.classList.remove('is-loading');
+			if (btn.dataset.label) btn.innerText = btn.dataset.label;
+		}
+		window.__isPaying = false;
+	}, 12000);
 }
 
 function formatCurrency(amount) {
