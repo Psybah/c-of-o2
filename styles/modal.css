@@ -143,6 +143,17 @@
 .pay-btn { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.3); }
 .pay-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.4); }
 
+.pay-btn:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.pay-btn:disabled:hover {
+	transform: none;
+	box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.3);
+}
+
 @media (max-width: 768px) {
 	.modal-container { margin: 0.75rem; max-height: 95vh; border-radius: 16px; }
 	.modal-header, .modal-content, .modal-footer { padding: 0.875rem 1rem; }
